@@ -2,9 +2,9 @@
 
 Project for my SKJ course.
 
-## Description 
+## Description
 
-This project is a tool for visual simulation of turing machines. 
+This project is a tool for visual simulation of turing machines.
 
 There are two example machines in the `assets` folder ready to load. You can create your own ones assuming you follow the conventions illustrated in the machines provided.
 
@@ -16,5 +16,5 @@ All requirements are specified in the `requirements.txt` file.
 
 ## Known Bugs
 
-- The resizing. I tried my very best to keep the image at it's specified dimensions, but I have no idea what I'm doing and was't able to fix it.
+- Resizing. I tried my very best to keep the image at it's specified dimensions, but I have no idea what I'm doing and wasn't able to fix it.
 - Inputting an invalid character into the tape input. This is not allowed and will result in recreation of the whole input field, because just setting its text leads to an endless callback loop. This means that the window will lose focus, which is very annoying.
