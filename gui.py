@@ -12,20 +12,20 @@ class GUI:
     def __init__(self):
         self.size = (1280, 720)
         self.tm = None
-        self.buffer = np.zeros((self.size[1], self.size[0], 3), dtype=np.float32)
         self.paused = True
         self.kill_thread = True
         self.run_thread = None
-        self.image_size = 100
+        self.image_size = 1
+        self.buffer = np.zeros((self.size[1]*self.image_size, self.size[0]*self.image_size, 3), dtype=np.float32)
 
     def create_image(self) -> np.ndarray:
         if self.tm is None:
-            return np.ones((self.size[1], self.size[0], 3), dtype=np.float32)
+            return np.ones((self.size[1]*self.image_size, self.size[0]*self.image_size, 3), dtype=np.float32)
 
         # some image magic
         g = tm_to_diagraph(self.tm)
         g.graph_attr['rankdir'] = 'LR'
-        g.graph_attr['size'] = f"{self.size[1]/96},{self.size[0]/96}"
+        g.graph_attr['size'] = f"{self.size[1]*self.image_size/96},{self.size[0]*self.image_size/96}"
         g_bytes = g.pipe(format='png')
         img = PIL.Image.open(io.BytesIO(g_bytes))
         img = img.convert('RGB')
@@ -63,8 +63,8 @@ class GUI:
         self.update_tape_table(Tape(list(tape), 0))
 
     def update_graph(self):
-        self.buffer[:] = 1.0
         img_array = self.create_image()
+        self.buffer[:] = 1.0
         self.buffer[:img_array.shape[0], :img_array.shape[1], :] = img_array
 
     def run_tm_thread(self):
@@ -150,7 +150,7 @@ class GUI:
         dpg.setup_dearpygui()
 
         with dpg.texture_registry(show=False):
-            dpg.add_raw_texture(width=self.size[0], height=self.size[1], tag="graph texture", default_value=self.buffer, format=dpg.mvFormat_Float_rgb)
+            dpg.add_raw_texture(width=self.size[0]*self.image_size, height=self.size[1]*self.image_size, tag="graph texture", default_value=self.buffer, format=dpg.mvFormat_Float_rgb)
 
         with dpg.window(label="Turing Machine", tag="Turing Machine"):
             with dpg.group(horizontal=True):
@@ -193,7 +193,6 @@ class GUI:
         self.lock_input()
 
         while dpg.is_dearpygui_running():
-            self.update_graph()
             dpg.render_dearpygui_frame()
 
         dpg.destroy_context()
