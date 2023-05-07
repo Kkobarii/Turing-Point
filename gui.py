@@ -1,12 +1,10 @@
 import time
-from threading import Thread
-
 import dearpygui.dearpygui as dpg
-
 import PIL.Image
 import io
 import numpy as np
 
+from threading import Thread
 from turing_machine import Tape, BLANK, tm_to_diagraph, load_tm
 
 
@@ -20,11 +18,11 @@ class GUI:
         self.run_thread = None
         self.image_size = 100
 
-
     def create_image(self) -> np.ndarray:
         if self.tm is None:
             return np.ones((self.size[1], self.size[0], 3), dtype=np.float32)
 
+        # some image magic
         g = tm_to_diagraph(self.tm)
         g.graph_attr['rankdir'] = 'LR'
         g.graph_attr['size'] = f"{self.size[1]/96},{self.size[0]/96}"
@@ -34,7 +32,6 @@ class GUI:
         in_numpy = np.array(img)/255.0
         in_numpy = in_numpy.astype(np.float32)
         return in_numpy
-
 
     def update_tape_table(self, tape: Tape):
         dpg.delete_item("tape table", children_only=True)
@@ -48,12 +45,15 @@ class GUI:
                 else:
                     dpg.add_text(symbol)
 
-
     def update_input(self):
         tape = dpg.get_value("input tape")
         if len(str(tape)) != 0 and str(tape)[-1] not in self.tm.input_alphabet:
             while len(str(tape)) > 0 and str(tape)[-1] not in self.tm.input_alphabet:
                 tape = tape[:-1]
+
+            # dpg.configure_item("input tape", callback=lambda: None)
+            # dpg.set_value("input tape", tape)
+            # dpg.configure_item("input tape", callback=self.update_input)
 
             dpg.delete_item("input tape")
             dpg.add_input_text(label="Input Tape", tag="input tape", callback=self.update_input, default_value=tape, parent="Input", width=-1)
@@ -62,12 +62,10 @@ class GUI:
         self.tm.tape = Tape(list(tape), 0)
         self.update_tape_table(Tape(list(tape), 0))
 
-
     def update_graph(self):
         self.buffer[:] = 1.0
         img_array = self.create_image()
         self.buffer[:img_array.shape[0], :img_array.shape[1], :] = img_array
-
 
     def run_tm_thread(self):
         while not self.tm.is_final() and not self.paused:
@@ -77,7 +75,6 @@ class GUI:
             self.update_graph()
             self.update_tape_table(self.tm.tape)
             time.sleep(dpg.get_value("sleep timer"))
-
 
     def run_tm(self):
         if not self.paused:
@@ -98,7 +95,6 @@ class GUI:
         self.run_thread = Thread(target=self.run_tm_thread)
         self.run_thread.start()
 
-
     def step_tm(self):
         if self.tm.is_final():
             return
@@ -106,7 +102,6 @@ class GUI:
         self.tm.step()
         self.update_graph()
         self.update_tape_table(self.tm.tape)
-
 
     def reset_tm(self):
         dpg.configure_item("input tape", enabled=True)
@@ -119,35 +114,35 @@ class GUI:
         self.update_tape_table(self.tm.tape)
         self.update_graph()
 
+    def lock_input(self):
+        dpg.configure_item("input tape", enabled=False)
+        dpg.configure_item("step self.tm", enabled=False)
+        dpg.configure_item("run self.tm", enabled=False)
+        dpg.configure_item("reset self.tm", enabled=False)
+        dpg.set_value("alphabet", f"Alphabet: null")
+        dpg.set_value("description", f"Description: null")
+        dpg.set_value("input tape", "")
+        self.update_tape_table(Tape([], 0))
+        self.update_graph()
+
+    def unlock_input(self):
+        dpg.configure_item("input tape", enabled=True)
+        dpg.configure_item("step self.tm", enabled=True)
+        dpg.configure_item("run self.tm", enabled=True)
+        dpg.configure_item("reset self.tm", enabled=True)
+        dpg.set_value("alphabet", f"Alphabet: {self.tm.input_alphabet}")
+        dpg.set_value("description", f"Description: {self.tm.description}")
+        self.update_tape_table(self.tm.tape)
+        self.update_graph()
 
     def load_tm(self):
         try:
             self.tm = load_tm(dpg.get_value("File Path"))
-            dpg.configure_item("input tape", enabled=True)
-            dpg.configure_item("run self.tm", enabled=True)
-            dpg.configure_item("step self.tm", enabled=True)
-            dpg.configure_item("reset self.tm", enabled=True)
-            dpg.set_value("alphabet", f"Alphabet: {self.tm.input_alphabet}")
-            dpg.set_value("description", f"Description: {self.tm.description}")
-            self.update_graph()
-            self.update_tape_table(self.tm.tape)
+            self.unlock_input()
         except:
             print("Error loading TM")
-        self.update_graph()
-
-
-    #  resize at your own risk, it just doesn't work
-    # def _on_resize_callback(self, sender, app_data):
-    #     print("resize")
-    #     width, height, _, _ = app_data
-    #     self.size = (width - 300, height)
-    #     self.buffer = np.ones((self.size[1], self.size[0], 3), dtype=np.float32)
-    #     dpg.delete_item("graph image")
-    #     dpg.delete_item("graph texture")
-    #     with dpg.texture_registry(show=False):
-    #         dpg.add_raw_texture(width=self.size[0], height=self.size[1], tag="graph texture", default_value=self.buffer, format=dpg.mvFormat_Float_rgb)
-    #     dpg.add_image_series("graph texture", [0, 0], [self.size[0]*10, self.size[1]*10], tag="graph image", parent="y axis")
-
+            self.tm = None
+            self.lock_input()
 
     def run(self):
         dpg.create_context()
@@ -156,8 +151,6 @@ class GUI:
 
         with dpg.texture_registry(show=False):
             dpg.add_raw_texture(width=self.size[0], height=self.size[1], tag="graph texture", default_value=self.buffer, format=dpg.mvFormat_Float_rgb)
-
-        # dpg.set_viewport_resize_callback(self._on_resize_callback)
 
         with dpg.window(label="Turing Machine", tag="Turing Machine"):
             with dpg.group(horizontal=True):
@@ -197,9 +190,9 @@ class GUI:
 
         dpg.show_viewport()
         dpg.set_primary_window("Turing Machine", True)
+        self.lock_input()
 
         while dpg.is_dearpygui_running():
-            # print(dpg.get_item_height("Graph"), dpg.get_item_width("Graph"))
             self.update_graph()
             dpg.render_dearpygui_frame()
 
