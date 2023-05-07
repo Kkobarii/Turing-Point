@@ -1,0 +1,330 @@
+{
+    "description": "Checks if the tape is made up of one word repeated twice.",
+    "states": [
+        "2",
+        "0",
+        "Q_rej",
+        "7",
+        "5",
+        "1",
+        "4",
+        "6",
+        "Q_acc",
+        "3",
+        "8"
+    ],
+    "input_alphabet": [
+        "a",
+        "b"
+    ],
+    "tape_alphabet": [
+        "b",
+        "D",
+        "A",
+        "a",
+        "B",
+        "C",
+        "X"
+    ],
+    "init_state": "1",
+    "final_states": [
+        "Q_acc",
+        "Q_rej"
+    ],
+    "transition_function": [
+        {
+            "state": "1",
+            "symbol": "A",
+            "new_state": "1",
+            "new_symbol": "A",
+            "move": 1
+        },
+        {
+            "state": "1",
+            "symbol": "B",
+            "new_state": "1",
+            "new_symbol": "B",
+            "move": 1
+        },
+        {
+            "state": "1",
+            "symbol": "a",
+            "new_state": "2",
+            "new_symbol": "A",
+            "move": 1
+        },
+        {
+            "state": "1",
+            "symbol": "b",
+            "new_state": "2",
+            "new_symbol": "B",
+            "move": 1
+        },
+        {
+            "state": "1",
+            "symbol": "C",
+            "new_state": "0",
+            "new_symbol": "C",
+            "move": -1
+        },
+        {
+            "state": "1",
+            "symbol": "D",
+            "new_state": "0",
+            "new_symbol": "D",
+            "move": -1
+        },
+        {
+            "state": "1",
+            "symbol": "\u25a1",
+            "new_state": "Q_acc",
+            "new_symbol": "\u25a1",
+            "move": 0
+        },
+        {
+            "state": "2",
+            "symbol": "a",
+            "new_state": "2",
+            "new_symbol": "a",
+            "move": 1
+        },
+        {
+            "state": "2",
+            "symbol": "b",
+            "new_state": "2",
+            "new_symbol": "b",
+            "move": 1
+        },
+        {
+            "state": "2",
+            "symbol": "C",
+            "new_state": "3",
+            "new_symbol": "C",
+            "move": -1
+        },
+        {
+            "state": "2",
+            "symbol": "D",
+            "new_state": "3",
+            "new_symbol": "D",
+            "move": -1
+        },
+        {
+            "state": "2",
+            "symbol": "\u25a1",
+            "new_state": "3",
+            "new_symbol": "\u25a1",
+            "move": -1
+        },
+        {
+            "state": "3",
+            "symbol": "A",
+            "new_state": "Q_rej",
+            "new_symbol": "A",
+            "move": 0
+        },
+        {
+            "state": "3",
+            "symbol": "B",
+            "new_state": "Q_rej",
+            "new_symbol": "B",
+            "move": 0
+        },
+        {
+            "state": "3",
+            "symbol": "\u25a1",
+            "new_state": "Q_rej",
+            "new_symbol": "\u25a1",
+            "move": 0
+        },
+        {
+            "state": "3",
+            "symbol": "a",
+            "new_state": "4",
+            "new_symbol": "C",
+            "move": -1
+        },
+        {
+            "state": "3",
+            "symbol": "b",
+            "new_state": "4",
+            "new_symbol": "D",
+            "move": -1
+        },
+        {
+            "state": "4",
+            "symbol": "a",
+            "new_state": "4",
+            "new_symbol": "a",
+            "move": -1
+        },
+        {
+            "state": "4",
+            "symbol": "b",
+            "new_state": "4",
+            "new_symbol": "b",
+            "move": -1
+        },
+        {
+            "state": "4",
+            "symbol": "A",
+            "new_state": "1",
+            "new_symbol": "A",
+            "move": 1
+        },
+        {
+            "state": "4",
+            "symbol": "B",
+            "new_state": "1",
+            "new_symbol": "B",
+            "move": 1
+        },
+        {
+            "state": "4",
+            "symbol": "\u25a1",
+            "new_state": "1",
+            "new_symbol": "\u25a1",
+            "move": 1
+        },
+        {
+            "state": "0",
+            "symbol": "A",
+            "new_state": "0",
+            "new_symbol": "A",
+            "move": -1
+        },
+        {
+            "state": "0",
+            "symbol": "B",
+            "new_state": "0",
+            "new_symbol": "B",
+            "move": -1
+        },
+        {
+            "state": "0",
+            "symbol": "\u25a1",
+            "new_state": "5",
+            "new_symbol": "\u25a1",
+            "move": 1
+        },
+        {
+            "state": "5",
+            "symbol": "A",
+            "new_state": "6",
+            "new_symbol": "\u25a1",
+            "move": 1
+        },
+        {
+            "state": "5",
+            "symbol": "B",
+            "new_state": "7",
+            "new_symbol": "\u25a1",
+            "move": 1
+        },
+        {
+            "state": "6",
+            "symbol": "A",
+            "new_state": "6",
+            "new_symbol": "A",
+            "move": 1
+        },
+        {
+            "state": "6",
+            "symbol": "B",
+            "new_state": "6",
+            "new_symbol": "B",
+            "move": 1
+        },
+        {
+            "state": "6",
+            "symbol": "X",
+            "new_state": "6",
+            "new_symbol": "X",
+            "move": 1
+        },
+        {
+            "state": "7",
+            "symbol": "A",
+            "new_state": "7",
+            "new_symbol": "A",
+            "move": 1
+        },
+        {
+            "state": "7",
+            "symbol": "B",
+            "new_state": "7",
+            "new_symbol": "B",
+            "move": 1
+        },
+        {
+            "state": "7",
+            "symbol": "X",
+            "new_state": "7",
+            "new_symbol": "X",
+            "move": 1
+        },
+        {
+            "state": "6",
+            "symbol": "C",
+            "new_state": "8",
+            "new_symbol": "X",
+            "move": -1
+        },
+        {
+            "state": "6",
+            "symbol": "D",
+            "new_state": "Q_rej",
+            "new_symbol": "D",
+            "move": 0
+        },
+        {
+            "state": "7",
+            "symbol": "D",
+            "new_state": "8",
+            "new_symbol": "X",
+            "move": -1
+        },
+        {
+            "state": "7",
+            "symbol": "C",
+            "new_state": "Q_rej",
+            "new_symbol": "C",
+            "move": 0
+        },
+        {
+            "state": "8",
+            "symbol": "A",
+            "new_state": "8",
+            "new_symbol": "A",
+            "move": -1
+        },
+        {
+            "state": "8",
+            "symbol": "B",
+            "new_state": "8",
+            "new_symbol": "B",
+            "move": -1
+        },
+        {
+            "state": "8",
+            "symbol": "X",
+            "new_state": "8",
+            "new_symbol": "X",
+            "move": -1
+        },
+        {
+            "state": "8",
+            "symbol": "\u25a1",
+            "new_state": "5",
+            "new_symbol": "\u25a1",
+            "move": 1
+        },
+        {
+            "state": "5",
+            "symbol": "X",
+            "new_state": "Q_acc",
+            "new_symbol": "X",
+            "move": 0
+        }
+    ]
+}
