@@ -169,7 +169,7 @@ class GUI:
         with dpg.window(label="Turing Machine", tag="Turing Machine"):
             with dpg.group(horizontal=True):
                 with dpg.group(horizontal=False, width=300):
-                    with dpg.child_window(label="Config", tag="Config"):
+                    with dpg.child_window(label="Config", tag="Config", border=False):
                         with dpg.child_window(label="Input File", tag="Input File", height=85):
                             dpg.add_text(f"Path to input file", tag="path label", color=(0, 200, 255))
                             dpg.add_input_text(label="File Path", tag="File Path", width=-1, default_value="assets/tm_two_words.json")
@@ -195,7 +195,7 @@ class GUI:
                         with dpg.table(header_row=True, borders_innerH=True, borders_outerH=True, borders_innerV=True, borders_outerV=True, tag="tape table"):
                             dpg.add_table_column(label="Tape", width_fixed=True)
 
-                with dpg.child_window(label="Graph", tag="Graph", autosize_y=True, autosize_x=True):
+                with dpg.child_window(label="Graph", tag="Graph", autosize_y=True, autosize_x=True, border=False):
                     with dpg.theme(tag="plot_theme"):
                         with dpg.theme_component(dpg.mvPlot):
                             dpg.add_theme_color(dpg.mvPlotCol_PlotBg, (255, 255, 255), category=dpg.mvThemeCat_Plots)
