@@ -22,7 +22,7 @@ Q_REJ = 'Q_rej'
 
 
 class Tape:
-    def __init__(self, tape: List[Symbol], head: int):
+    def __init__(self, tape: List[Symbol], head: int = 0):
         if len(tape) == 0:
             tape = [BLANK]
         self.tape = tape
@@ -38,7 +38,7 @@ class Tape:
         return out
 
     def __repr__(self):
-        return f'Tape({self.tape}, {self.head})'
+        return f'Tape({self.head}, {self.tape})'
 
     def __trim(self):
         while len(self.tape) > 0 and self.tape[0] == BLANK and self.head > 0:
@@ -60,7 +60,7 @@ class Tape:
             self.tape = [BLANK] + self.tape
             self.head = 0
         if self.head >= len(self.tape):
-            self.tape.append(BLANK)
+            self.tape = self.tape + [BLANK]
         self.__trim()
 
 
@@ -144,19 +144,11 @@ class TuringMachine:
         self.tape.move(move)
         self.current_state = new_state
 
-    def run(self, tape: str = ''):
-        if tape != '':
-            self.tape = Tape(list(tape), 0)
-        while self.current_state not in self.final_states:
-            print(self, end="\t\t")
-            self.step()
-
     def is_accepted(self):
         return self.current_state in self.final_states and self.current_state == Q_ACC
 
     def is_rejected(self):
-        return (self.current_state in self.final_states and self.current_state == Q_REJ) or \
-                  (self.current_state not in self.final_states)
+        return self.current_state in self.final_states and self.current_state == Q_REJ
 
     def is_final(self):
         return self.current_state in self.final_states
