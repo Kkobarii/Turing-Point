@@ -160,7 +160,7 @@ class GUI:
 
     def run(self):
         dpg.create_context()
-        dpg.create_viewport()
+        dpg.create_viewport(title='Turing Point')
         dpg.setup_dearpygui()
 
         with dpg.texture_registry(show=False):
