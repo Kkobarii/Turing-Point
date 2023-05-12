@@ -1,12 +1,12 @@
 {
     "description": "Removes the same amount of a's from the beginning and end of the tape.",
     "states": [
-        "2",
         "0",
-        "3",
-        "5",
         "1",
-        "4"
+        "2",
+        "3",
+        "4",
+        "5"
     ],
     "input_alphabet": [
         "a",
