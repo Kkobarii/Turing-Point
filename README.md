@@ -10,11 +10,11 @@ There are two example machines in the `assets` folder ready to load. You can cre
 
 In the program itself, you can load a turing machine and see it work through a tape. The program allows custom tape specification, it has functionality to run the machine (with the option of changing sleep time between steps), step through it manually and reset it.
 
-![GUI](assets/gui_example.png)
+![GUI](assets/gui_example.gif)
 
-## Requirements
+## Build
 
-All requirements are specified in the `requirements.txt` file.
+All requirements are specified in the `requirements.txt` file, install them with `pip install -r requirements.txt`. Run the program with `python main.py`.
 
 ## Known Bugs
 
